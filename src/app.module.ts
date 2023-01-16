@@ -1,13 +1,10 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { UsersController } from './users/users.controller';
+import { ProductsController } from './products/products.controller';
 
 @Module({
   imports: [UsersModule],
@@ -18,9 +15,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(
-        { path: '/users', method: RequestMethod.ALL },
-        { path: '/products', method: RequestMethod.ALL },
-      );
+      .forRoutes(UsersController, ProductsController);
   }
 }
